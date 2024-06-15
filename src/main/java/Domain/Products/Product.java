@@ -1,14 +1,10 @@
 package Domain.Products;
 
 import java.util.Objects;
-import java.util.UUID;
 
+import Infrastructure.Persistence.Converters.ProductIdConverter;
 import Shared.Money;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Embedded;
+import jakarta.persistence.*;
 
 /**
  * Represents a product.
@@ -20,8 +16,9 @@ public class Product {
      * The unique identifier for the product.
      */
     @Id
+    @Convert(converter = ProductIdConverter.class)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private ProductId id;
 
     /**
      * The name of the product.
@@ -53,7 +50,7 @@ public class Product {
      *
      * @return the unique identifier
      */
-    public UUID getId() {
+    public ProductId getId() {
         return id;
     }
 

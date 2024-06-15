@@ -3,15 +3,13 @@ package Domain.Orders;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import Domain.Customers.Customer;
+import Domain.Customers.CustomerId;
 import Domain.Products.Product;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Transient;
+import Infrastructure.Persistence.Converters.CustomerIdConverter;
+import Infrastructure.Persistence.Converters.OrderIdConverter;
+import jakarta.persistence.*;
 
 /**
  * Represents a customer order.
@@ -32,13 +30,15 @@ public class Order {
      * The unique identifier for the order.
      */
     @Id
+    @Convert(converter = OrderIdConverter.class)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private OrderId id;
 
     /**
      * The unique identifier for the customer who placed the order.
      */
-    private UUID customerId;
+    @Convert(converter = CustomerIdConverter.class)
+    private CustomerId customerId;
 
     /**
      * Creates a new order for the given customer.
@@ -48,7 +48,7 @@ public class Order {
      */
     public static Order create(Customer customer) {
         Order order = new Order();
-        order.id = UUID.randomUUID();
+        order.id = OrderId.generate();
         order.customerId = customer.getId();
         return order;
     }
@@ -59,24 +59,24 @@ public class Order {
      * @param product the product to add
      */
     public void add(Product product) {
-        LineItem lineItem = new LineItem(UUID.randomUUID(), id, product.getId(), product.getPrice());
+        LineItem lineItem = new LineItem(LineItemId.generate(), id, product.getId(), product.getPrice());
         lineItems.add(lineItem);
     }
 
     // Getters and Setters
-    public UUID getId() {
+    public OrderId getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(OrderId id) {
         this.id = id;
     }
 
-    public UUID getCustomerId() {
+    public CustomerId getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(UUID customerId) {
+    public void setCustomerId(CustomerId customerId) {
         this.customerId = customerId;
     }
 

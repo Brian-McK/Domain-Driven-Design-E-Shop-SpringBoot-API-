@@ -1,11 +1,9 @@
 package Domain.Customers;
 
 import java.util.Objects;
-import java.util.UUID;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
+import Infrastructure.Persistence.Converters.CustomerIdConverter;
+import jakarta.persistence.*;
 
 /**
  * Represents a customer.
@@ -17,8 +15,9 @@ public class Customer {
      * The unique identifier for the customer.
      */
     @Id
+    @Convert(converter = CustomerIdConverter.class)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private CustomerId id;
 
     /**
      * The name of the customer.
@@ -43,17 +42,8 @@ public class Customer {
      *
      * @return the unique identifier
      */
-    public UUID getId() {
+    public CustomerId getId() {
         return id;
-    }
-
-    /**
-     * Sets the unique identifier for the customer.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     /**

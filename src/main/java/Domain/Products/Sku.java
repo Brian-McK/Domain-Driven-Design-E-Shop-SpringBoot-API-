@@ -1,5 +1,7 @@
 package Domain.Products;
 
+import Infrastructure.Config.AppConfig;
+
 import java.util.Objects;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Objects;
 public final class Sku {
 
     // A constant for the default length of a valid SKU.
-    private static final int DEFAULT_LENGTH = 15;
+    private static final int DEFAULT_LENGTH = AppConfig.getSkuLength();
 
     private final String value;
 

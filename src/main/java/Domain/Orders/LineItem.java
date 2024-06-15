@@ -1,12 +1,13 @@
 package Domain.Orders;
 
 import java.util.Objects;
-import java.util.UUID;
 
+import Domain.Products.ProductId;
+import Infrastructure.Persistence.Converters.LineItemIdConverter;
+import Infrastructure.Persistence.Converters.OrderIdConverter;
+import Infrastructure.Persistence.Converters.ProductIdConverter;
 import Shared.Money;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 /**
  * Represents a line item.
@@ -18,17 +19,21 @@ public class LineItem {
      * The unique identifier for the line item.
      */
     @Id
-    private UUID id;
+    @Convert(converter = LineItemIdConverter.class)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private LineItemId id;
 
     /**
      * The unique identifier for the order to which the line item belongs.
      */
-    private UUID orderId;
+    @Convert(converter = OrderIdConverter.class)
+    private OrderId orderId;
 
     /**
      * The unique identifier for the product associated with the line item.
      */
-    private UUID productId;
+    @Convert(converter = ProductIdConverter.class)
+    private ProductId productId;
 
     /**
      * The price of the line item, represented as a Money object.
@@ -50,7 +55,7 @@ public class LineItem {
      * @param productId the unique identifier for the product associated with the line item
      * @param price the price of the line item, represented as a Money object
      */
-    public LineItem(UUID id, UUID orderId, UUID productId, Money price) {
+    public LineItem(LineItemId id, OrderId orderId, ProductId productId, Money price) {
         this.id = id;
         this.orderId = orderId;
         this.productId = productId;
@@ -64,7 +69,7 @@ public class LineItem {
      *
      * @return the unique identifier
      */
-    public UUID getId() {
+    public LineItemId getId() {
         return id;
     }
 
@@ -73,7 +78,7 @@ public class LineItem {
      *
      * @return the unique identifier for the order
      */
-    public UUID getOrderId() {
+    public OrderId getOrderId() {
         return orderId;
     }
 
@@ -82,7 +87,7 @@ public class LineItem {
      *
      * @return the unique identifier for the product
      */
-    public UUID getProductId() {
+    public ProductId getProductId() {
         return productId;
     }
 
